@@ -1,10 +1,11 @@
-package com.helloworld.onetoonerelationship
+package com.helloworld.contactsapp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -26,7 +27,7 @@ fun ContactScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    onEvent(ContactEvent.ShowDialog)
+                    onEvent(ContactEvent.ShowDialog)  // Trigger event to show dialog
                 }
             ) {
                 Icon(
@@ -38,7 +39,9 @@ fun ContactScreen(
     ) { padding ->
         LazyColumn(
             contentPadding = padding,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp), // added padding for better layout
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Sort Row
@@ -72,7 +75,8 @@ fun ContactScreen(
             // Contact List
             items(state.contacts) { contact ->
                 Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Column(
                         modifier = Modifier.weight(1f)

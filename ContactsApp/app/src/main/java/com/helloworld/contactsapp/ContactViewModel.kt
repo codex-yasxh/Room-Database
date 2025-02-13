@@ -1,4 +1,4 @@
-package com.helloworld.onetoonerelationship
+package com.helloworld.contactsapp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ContactViewModel(
-    private val DAO: ContactDAO
+    private val DAO: ContactDAO // You can inject this via ViewModelFactory manually
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(ContactState())
+    private val _state = MutableStateFlow(ContactState()) // Holds UI state
     private val _sortType = MutableStateFlow(SortType.FIRST_NAME)
 
     // Fetch sorted contacts based on selected sortType
@@ -40,7 +40,7 @@ class ContactViewModel(
 
     // Handle different user actions
     fun onEvent(event: ContactEvent) {
-        when (event) {
+        when(event) {
             is ContactEvent.DeleteContact -> {
                 viewModelScope.launch {
                     DAO.deleteContact(event.contact)

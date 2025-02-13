@@ -1,4 +1,4 @@
-package com.helloworld.onetoonerelationship
+package com.helloworld.contactsapp
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -46,7 +46,15 @@ fun AddContactDialog(
                 }
             },
             confirmButton = {
-                TextButton(onClick = { onEvent(ContactEvent.SaveContact) }) {
+                TextButton(onClick = {
+                    // Create the contact object and pass it to SaveContact event
+                    val newContact = Contact(
+                        firstName = state.firstName,
+                        lastName = state.lastName,
+                        phoneNumber = state.phoneNumber
+                    )
+                    onEvent(ContactEvent.SaveContact(newContact))
+                }) {
                     Text("Save")
                 }
             },
@@ -64,6 +72,6 @@ fun AddContactDialog(
 fun PreviewAddContactDialog() {
     AddContactDialog(
         state = ContactState(isAddingContact = true),
-        onEvent = {}
+        onEvent = { }
     )
 }

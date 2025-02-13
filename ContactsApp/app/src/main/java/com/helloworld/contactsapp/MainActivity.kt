@@ -1,4 +1,4 @@
-package com.helloworld.onetoonerelationship
+package com.helloworld.contactsapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,43 +14,36 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.room.Room
-import com.helloworld.onetoonerelationship.ui.theme.OneToOneRelationshipTheme
+import com.helloworld.contactsapp.ui.theme.OneToOneRelationshipTheme
 
 class MainActivity : ComponentActivity() {
 
-    // Manually initialize the Room Database and DAO
+    // Initialize Room Database and DAO
     private lateinit var contactDAO: ContactDAO
     private lateinit var contactDatabase: ContactDatabase
 
-    // Initialize ViewModel manually without Hilt
-    private val viewModel: ContactViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Enable edge-to-edge mode (optional)
         enableEdgeToEdge()
 
-        // Initialize the Room database and DAO manually
+        // Initialize Room Database and DAO manually
         contactDatabase = Room.databaseBuilder(
             applicationContext,
             ContactDatabase::class.java,
             "contact_db"
         ).build()
 
-        contactDAO = contactDatabase.contactDAO()
+        contactDAO = contactDatabase.DAO
 
-        // Pass the DAO to ViewModel manually
+        // Pass DAO to ViewModel through ViewModelFactory
         val viewModelFactory = ContactViewModelFactory(contactDAO)
-        viewModel = viewModelFactory.create(ContactViewModel::class.java)
+        val viewModel: ContactViewModel by viewModels { viewModelFactory }
 
         setContent {
-            OneToOneRelationshipTheme {
-                // Setting the Content Composable
                 ContactScreen(
                     state = viewModel.state.collectAsState().value,
                     onEvent = { event -> viewModel.onEvent(event) }
                 )
-            }
         }
     }
 }
